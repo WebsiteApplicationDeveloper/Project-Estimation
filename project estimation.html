@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Machine‑Afrik • MVP Proposal</title>
+  <meta name="description" content="A stunning, animated proposal landing page with Chart.js visuals for a top‑tier business pitch." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      /* Core Palette */
+      --bg-1:#261CFF;          /* Purplish-Blue start */
+      --bg-2:#6A00FF;          /* Purplish-Blue end */
+      --acc-1:#C6FF3E;         /* Greenish-Yellow accent */
+      --acc-1-deep:#A7FF00;    
+      --hi-1:#FF6A00;          /* Orange-Red start */
+      --hi-2:#FF2E2E;          /* Orange-Red end */
+      --ink:#E7E8FB;
+      --ink-dim:#BFC3E6;
+      --card:#0E0B24AA;        /* Glass overlay */
+      --card-strong:#0E0B24DD;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius-lg: 26px;
+      --maxw: 1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--ink); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 10% -10%, #4C2BFF44, transparent),
+                  radial-gradient(900px 400px at 90% 10%, #FF6A0040, transparent),
+                  linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      overflow-x:hidden;
+    }
+    /* Animated gradient backdrop shapes */
+    .blob{position:absolute; filter:blur(60px); opacity:.55; mix-blend:screen; animation:float 18s ease-in-out infinite}
+    .blob.b1{top:-120px; left:-120px; width:420px; height:420px; background:radial-gradient(circle at 30% 30%, var(--hi-1), transparent 60%)}
+    .blob.b2{top:-60px; right:-160px; width:520px; height:520px; background:radial-gradient(circle at 70% 30%, var(--acc-1), transparent 60%); animation-duration:22s}
+    .blob.b3{bottom:-160px; left:10%; width:560px; height:560px; background:radial-gradient(circle at 50% 50%, var(--hi-2), transparent 60%); animation-duration:26s}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(30px)}}
+
+    /* Layout */
+    .container{width:100%; max-width:var(--maxw); margin-inline:auto; padding:0 20px}
+
+    /* Navbar */
+    .nav{position:sticky; top:0; z-index:40; backdrop-filter:blur(12px); background:linear-gradient(180deg, #0A0726D9, #0A072600); border-bottom:1px solid #ffffff1a}
+    .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.4px}
+    .logo{width:36px; height:36px; border-radius:10px; background:conic-gradient(from 120deg, var(--bg-1), var(--bg-2), var(--hi-1), var(--hi-2), var(--bg-1)); box-shadow:0 8px 28px #00000066}
+    .nav a{color:var(--ink); text-decoration:none; opacity:.9}
+    .nav-menu{display:flex; gap:20px}
+    .cta{display:inline-flex; align-items:center; gap:10px; padding:10px 16px; border-radius:999px; border:1px solid #ffffff1f; background:linear-gradient(135deg,#1A173F,#171236); box-shadow: inset 0 0 0 1px #ffffff14, 0 12px 30px rgba(0,0,0,.3)}
+    .cta .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(180deg,var(--hi-1),var(--hi-2)); box-shadow:0 0 12px var(--hi-1)}
+
+    /* Hero */
+    .hero{position:relative; padding:96px 0 60px}
+    h1{font-family:Poppins,Inter,sans-serif; font-weight:800; line-height:1.08; margin:0; font-size:clamp(38px,4.8vw,64px)}
+    .gradient-text{background:linear-gradient(90deg,var(--acc-1) 0%, #fff 40%, var(--ink) 100%); -webkit-background-clip:text; background-clip:text; color:transparent}
+    .lead{max-width:760px; font-size:clamp(16px,2vw,20px); line-height:1.7; color:var(--ink-dim); margin:20px 0 30px}
+    .hero-cta{display:flex; gap:14px; flex-wrap:wrap}
+    .btn{cursor:pointer; border:none; padding:14px 18px; font-weight:700; letter-spacing:.25px; border-radius:14px}
+    .btn-primary{color:#0a0a12; background:linear-gradient(135deg,var(--acc-1), var(--acc-1-deep)); box-shadow:0 12px 30px #C6FF3E44}
+    .btn-primary:hover{transform:translateY(-1px)}
+    .btn-ghost{color:#fff; background:linear-gradient(135deg,#FFFFFF14,#FFFFFF05); border:1px solid #ffffff24}
+
+    /* Key stats strip */
+    .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:36px}
+    .stat{padding:18px; border-radius:var(--radius); background:linear-gradient(180deg,#FFFFFF1A,#FFFFFF08); backdrop-filter:blur(8px); border:1px solid #ffffff1e; box-shadow:var(--shadow)}
+    .stat h3{margin:0; font-size:28px}
+    .stat p{margin:6px 0 0; color:var(--ink-dim); font-size:14px}
+
+    /* Section */
+    section{padding:72px 0; position:relative}
+    .section-title{font-family:Poppins; font-size:clamp(26px,3.6vw,40px); margin:0 0 18px}
+    .muted{color:var(--ink-dim)}
+
+    /* Cards */
+    .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+    .card{border-radius:var(--radius-lg); background:linear-gradient(180deg,#0D0A27,#0B0921); border:1px solid #ffffff1a; box-shadow: var(--shadow); padding:22px; position:relative; overflow:hidden}
+    .card::after{content:""; position:absolute; inset:-2px; border-radius:inherit; padding:1px; background:linear-gradient(135deg, transparent, #ffffff1f, transparent); -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude}
+    .badge{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; font-size:12px; background:linear-gradient(135deg, #ffffff1a, #ffffff08); border:1px solid #ffffff22}
+    .badge .spark{width:8px; height:8px; border-radius:50%; background:linear-gradient(135deg,var(--hi-1),var(--hi-2)); box-shadow:0 0 12px var(--hi-1)}
+
+    /* Charts */
+    .charts{display:grid; grid-template-columns:1fr; gap:20px}
+    canvas{width:100%; height:100%}
+    .chart-card{padding:22px; border-radius:var(--radius-lg); background:linear-gradient(180deg,#0D0A27,#0B0921); border:1px solid #ffffff1a; box-shadow: var(--shadow)}
+    .chart-card{padding:22px; border-radius:var(--radius-lg); background:linear-gradient(180deg,#0D0A27,#0B0921); border:1px solid #ffffff1a; box-shadow: var(--shadow)}
+
+    /* Timeline */
+    .timeline{display:grid; gap:14px}
+    .lane{display:grid; grid-template-columns:120px 1fr; gap:16px; align-items:start}
+    .lane .when{font-weight:700; color:var(--acc-1)}
+    .lane .what{padding:14px; border-radius:14px; background:#ffffff0a; border:1px solid #ffffff1a}
+
+    /* CTA */
+    .cta-panel{display:flex; align-items:center; justify-content:space-between; gap:20px; padding:24px; border-radius:var(--radius-lg); background:linear-gradient(135deg,#140F3Bcc,#100C31cc),
+               linear-gradient(135deg, var(--hi-1), var(--hi-2)); background-blend-mode: soft-light, normal; border:1px solid #ffffff2a}
+    .cta-panel h3{margin:0; font-family:Poppins; font-size:clamp(22px,3vw,30px)}
+
+    /* Footer */
+    footer{padding:60px 0; color:#AEB1D8}
+    .foot{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap}
+
+    /* Responsive */
+    @media (max-width:1000px){.cards{grid-template-columns:1fr 1fr}.charts{grid-template-columns:1fr}}
+    @media (max-width:700px){.stats{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr}.lane{grid-template-columns:1fr}.nav-menu{display:none}}
+
+    /* Reveal on scroll */
+    .reveal{opacity:0; transform:translateY(16px); transition: all .7s ease}
+    .reveal.visible{opacity:1; transform:none}
+  </style>
+</head>
+<body>
+  <!-- Background blobs -->
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="brand"><span class="logo"></span><span>Machine‑Afrik • MVP Proposal</span></div>
+      <div class="nav-menu">
+        <a href="#overview">Overview</a>
+        <a href="#value">Value</a>
+        <a href="#charts">Roadmap</a>
+        <a href="#cta">Contact</a>
+        <a class="cta" href="#download"><span class="dot"></span> Download PDF</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="overview">
+    <div class="container">
+      <h1 class="reveal">A premium, data‑driven <span class="gradient-text">MVP proposal</span> for Machine‑Afrik</h1>
+      <p class="lead reveal" style="transition-delay:.05s">Designed like a top‑tier pitch deck: clear outcomes, bold visuals, and animated charts. Built on a purplish‑blue gradient foundation with greenish‑yellow accents and orange‑red highlights for an expressive, modern brand feel.</p>
+      <div class="hero-cta reveal" style="transition-delay:.1s">
+        <button class="btn btn-primary" onclick="document.getElementById('charts').scrollIntoView({behavior:'smooth'})">See Roadmap & Budget</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('value').scrollIntoView({behavior:'smooth'})">Explore Value</button>
+      </div>
+
+      <div class="stats reveal" style="transition-delay:.15s">
+        <div class="stat"><h3>11 Phases</h3><p>From brand to launch & support</p></div>
+        <div class="stat"><h3>21 Sprints</h3><p>Two‑week cadence, focused delivery</p></div>
+        <div class="stat"><h3>€20/hr</h3><p>Transparent pricing model</p></div>
+        <div class="stat"><h3>v1.0‑RC</h3><p>Requirements frozen & tracked</p></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- VALUE PROPOSITION -->
+  <section id="value">
+    <div class="container">
+      <h2 class="section-title reveal">Why this proposal wins</h2>
+      <p class="muted reveal" style="max-width:840px">Laser‑focused MVP for accommodations: verified supply, smooth booking & CinetPay payments, and measurable conversion. Every deliverable ties to clear milestones and MoSCoW priorities to protect timeline and budget.</p>
+
+      <div class="cards" style="margin-top:26px">
+        <article class="card reveal">
+          <span class="badge"><span class="spark"></span>Impact</span>
+          <h3 style="margin:10px 0 8px">MVP outcomes</h3>
+          <p class="muted">Approved listings in Abidjan, high payment success, and a traveler experience that converts.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.05s">
+          <span class="badge"><span class="spark"></span>Precision</span>
+          <h3 style="margin:10px 0 8px">Clarity & control</h3>
+          <p class="muted">Frozen requirements (v1.0‑RC) and change control — no scope surprises.</p>
+        </article>
+        <article class="card reveal" style="transition-delay:.1s">
+          <span class="badge"><span class="spark"></span>Velocity</span>
+          <h3 style="margin:10px 0 8px">Sprint delivery</h3>
+          <p class="muted">21 sprints with defined demos and acceptance criteria you can sign.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+      <div class="card reveal" style="margin-top:24px; overflow:auto">
+        <h3 style="margin:0 0 10px">Detailed Estimation (EUR @ €20/hr)</h3>
+        <table style="width:100%; border-collapse:collapse; font-size:14px">
+          <thead>
+            <tr>
+              <th style="text-align:left; padding:10px; border-bottom:1px solid #ffffff22">Task</th>
+              <th style="text-align:left; padding:10px; border-bottom:1px solid #ffffff22">Details</th>
+              <th style="text-align:left; padding:10px; border-bottom:1px solid #ffffff22">Technical task implementation</th>
+              <th style="text-align:left; padding:10px; border-bottom:1px solid #ffffff22">Timeline</th>
+              <th style="text-align:left; padding:10px; border-bottom:1px solid #ffffff22">Hourly Rate (20 EUR)</th>
+              <th style="text-align:right; padding:10px; border-bottom:1px solid #ffffff22">Estimated Hours</th>
+              <th style="text-align:right; padding:10px; border-bottom:1px solid #ffffff22">Estimated Cost (EUR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:10px">Phase 1 — Requirements & Flows</td>
+              <td style="padding:10px">Freeze scope as PRD v1.0‑RC; system flows & data model</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>PRD v1.0‑RC</li>
+                  <li>System/sequence diagrams</li>
+                  <li>ERD & rules mapping</li>
+                </ul>
+              </td>
+              <td style="padding:10px">4 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">120</td>
+              <td style="padding:10px; text-align:right">€2,400</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 2 — Brand Design</td>
+              <td style="padding:10px">Identity for site/app/social</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>Logo, colors, typography</li>
+                  <li>Social templates</li>
+                  <li>Brand guide PDF</li>
+                </ul>
+              </td>
+              <td style="padding:10px">4 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">100</td>
+              <td style="padding:10px; text-align:right">€2,000</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 3 — UI/UX (Admin & Mobile)</td>
+              <td style="padding:10px">UX flows; high‑fidelity FR UI</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>IA & wireframes</li>
+                  <li>Design system & prototypes</li>
+                  <li>Mobile + Admin screens</li>
+                </ul>
+              </td>
+              <td style="padding:10px">6 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">220</td>
+              <td style="padding:10px; text-align:right">€4,400</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 4 — Frontend (Mobile)</td>
+              <td style="padding:10px">Flutter traveler/host app</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>Auth/onboarding, search, detail</li>
+                  <li>Calendar/checkout</li>
+                  <li>CinetPay handoff</li>
+                </ul>
+              </td>
+              <td style="padding:10px">6 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">320</td>
+              <td style="padding:10px; text-align:right">€6,400</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 5 — Frontend (Website + Admin)</td>
+              <td style="padding:10px">Marketing site + Admin/Host web</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>CMS showcase site</li>
+                  <li>Listings CRUD & moderation</li>
+                  <li>Dashboards</li>
+                </ul>
+              </td>
+              <td style="padding:10px">4 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">300</td>
+              <td style="padding:10px; text-align:right">€6,000</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 6 — Backend APIs (Mobile)</td>
+              <td style="padding:10px">APIs for mobile journeys</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>Auth, users, hosts, listings/media</li>
+                  <li>Booking & pricing</li>
+                  <li>CinetPay sessions/webhooks</li>
+                </ul>
+              </td>
+              <td style="padding:10px">4 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">260</td>
+              <td style="padding:10px; text-align:right">€5,200</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 7 — Backend APIs (Web/Admin)</td>
+              <td style="padding:10px">Admin/reporting/payouts</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>Moderation, RBAC, audit logs</li>
+                  <li>Payouts (T+1, weekly batches)</li>
+                  <li>Exports</li>
+                </ul>
+              </td>
+              <td style="padding:10px">4 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">240</td>
+              <td style="padding:10px; text-align:right">€4,800</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 8 — Integration</td>
+              <td style="padding:10px">Backend ↔ Frontend</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>Contract tests & caching</li>
+                  <li>Image CDN & notifications</li>
+                  <li>Error handling</li>
+                </ul>
+              </td>
+              <td style="padding:10px">4 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">200</td>
+              <td style="padding:10px; text-align:right">€4,000</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 9 — Testing & QA</td>
+              <td style="padding:10px">E2E/UAT, perf & security</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>Automated suites</li>
+                  <li>QA report & fixes</li>
+                  <li>Load & security checks</li>
+                </ul>
+              </td>
+              <td style="padding:10px">2 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">180</td>
+              <td style="padding:10px; text-align:right">€3,600</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 10 — Deployment</td>
+              <td style="padding:10px">CI/CD, infra, smoke tests</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>IaC, monitoring, backups</li>
+                  <li>Data seeding</li>
+                  <li>Rollback drills</li>
+                </ul>
+              </td>
+              <td style="padding:10px">2 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">80</td>
+              <td style="padding:10px; text-align:right">€1,600</td>
+            </tr>
+            <tr>
+              <td style="padding:10px">Phase 11 — Post‑Launch Support</td>
+              <td style="padding:10px">Store submission & stabilization</td>
+              <td style="padding:10px">
+                <ul>
+                  <li>Store assets & submissions</li>
+                  <li>Crash monitoring</li>
+                  <li>Hotfixes</li>
+                </ul>
+              </td>
+              <td style="padding:10px">2 weeks</td>
+              <td style="padding:10px">€20/hr</td>
+              <td style="padding:10px; text-align:right">100</td>
+              <td style="padding:10px; text-align:right">€2,000</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; font-weight:700" colspan="5">Subtotal</td>
+              <td style="padding:10px; text-align:right; font-weight:700">2,120</td>
+              <td style="padding:10px; text-align:right; font-weight:700">€42,400</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; font-weight:700" colspan="5">Contingency (10%)</td>
+              <td style="padding:10px; text-align:right; font-weight:700">212</td>
+              <td style="padding:10px; text-align:right; font-weight:700">€4,240</td>
+            </tr>
+            <tr>
+              <td style="padding:10px; font-weight:900" colspan="5">Grand Total</td>
+              <td style="padding:10px; text-align:right; font-weight:900">2,332</td>
+              <td style="padding:10px; text-align:right; font-weight:900">€46,640</td>
+            </tr>
+          </tbody>
+        </table>
+      
+ <div>
+
+      <div class="cards" style="margin-top:24px">
+        <article class="card reveal">
+          <span class="badge"><span class="spark"></span>Milestones</span>
+          <div class="timeline" style="margin-top:10px">
+            <div class="lane">
+              <div class="when">P1–P3</div>
+              <div class="what">Requirements frozen (v1.0‑RC), brand identity, and full UI/UX for Mobile & Admin.</div>
+            </div>
+            <div class="lane">
+              <div class="when">P4–P7</div>
+              <div class="what">Frontend builds (Mobile, Website, Admin) and core/back‑office APIs incl. CinetPay.</div>
+            </div>
+            <div class="lane">
+              <div class="when">P8–P11</div>
+              <div class="what">Integration, QA, go‑live, and post‑launch app store support.</div>
+            </div>
+          </div>
+        </article>
+        <article class="card reveal" style="transition-delay:.05s">
+          <span class="badge"><span class="spark"></span>Assumptions</span>
+          <ul class="muted" style="margin:10px 0 0 18px">
+            <li>Accommodation vertical only; French UI; Abidjan launch.</li>
+            <li>CinetPay (XOF), payouts T+1 eligibility, weekly batches.</li>
+            <li>Client provides amenities list, neighborhood taxonomy, branding (or we craft in Phase 2).</li>
+          </ul>
+        </article>
+        <article class="card reveal" style="transition-delay:.1s">
+          <span class="badge"><span class="spark"></span>Deliverables</span>
+          <ul class="muted" style="margin:10px 0 0 18px">
+            <li>Pitch‑ready PDF proposal & PRD v1.0‑RC.</li>
+            <li>Interactive timelines and cost breakdown dashboard (this page).</li>
+            <li>Deployment playbook and QA report at launch.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALL TO ACTION -->
+  <section id="cta">
+    <div class="container cta-panel reveal">
+      <h3>Ready to lock the plan and move to execution?</h3>
+      <div>
+        <button class="btn btn-primary" onclick="alert('Thanks! We will prepare the Statement of Work next.')">Approve & Proceed</button>
+        <button class="btn btn-ghost" onclick="window.scrollTo({top:0, behavior:'smooth'})">Back to Top</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:12px"><span class="logo"></span><strong>Machine‑Afrik</strong> · MVP Proposal</div>
+      <div class="muted">© 2025 — Designed for a vibrant, premium look.</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+    },{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Utility: gradient generator for Chart.js
+    function makeGradient(ctx, colors){
+      const g = ctx.createLinearGradient(0,0,0,260);
+      colors.forEach(([stop,color])=> g.addColorStop(stop, color));
+      return g;
+    }
+
+    const timelineGrad = makeGradient(timelineCtx, [[0,'#C6FF3E55'], [1,'#C6FF3E11']]);
+    new Chart(timelineCtx, {
+      type:'bar',
+      data:{
+        labels:['P1','P2','P3','P4','P5','P6','P7','P8','P9','P10','P11'],
+        datasets:[{
+          label:'Sprints',
+          data:[2,2,3,3,2,2,2,2,1,1,1],
+          borderRadius:8,
+          backgroundColor: timelineGrad,
+          borderColor:'#C6FF3E',
+          borderWidth:1.5,
+        }]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{
+          legend:{display:false},
+          tooltip:{backgroundColor:'#0E0B24', borderColor:'#ffffff2a', borderWidth:1},
+          title:{display:true, text:'Total 21 Sprints', color:'#E7E8FB', font:{weight:'700'}}
+        },
+        scales:{
+          x:{ grid:{display:false}, ticks:{color:'#BFC3E6'} },
+          y:{ beginAtZero:true, grid:{color:'#ffffff14'}, ticks:{color:'#BFC3E6', stepSize:1} }
+        },
+        animation:{ duration:1100, easing:'easeOutQuart' }
+      }
+    });
+
+    // COST SPLIT (doughnut)
+    const costCtx = document.getElementById('costChart').getContext('2d');
+    const labels = ['Req/Flows','Brand','UI/UX','FE Mobile','FE Web/Admin','BE Mobile','BE Web/Admin','Integration','QA','Deploy','Post‑Launch'];
+    const hours  = [120,100,220,320,300,260,240,200,180,80,100];
+    const totalHours = hours.reduce((a,b)=>a+b,0);
+    const euros = totalHours * 20;
+
+    const colors = [
+      '#A7FF00','#C6FF3E','#FF6A00','#FF2E2E','#7B66FF','#5A3BFF','#FF8A3B','#FFC43D','#C9C7FF','#FF936B','#8FFF85'
+    ];
+    new Chart(costCtx, {
+      type:'doughnut',
+      data:{ labels, datasets:[{ data:hours, backgroundColor:colors, borderColor:'#0D0A27', borderWidth:2, hoverOffset:6 }] },
+      options:{
+        plugins:{
+          legend:{position:'bottom', labels:{color:'#E7E8FB'}},
+          tooltip:{callbacks:{
+            label:(ctx)=>` ${ctx.label}: ${ctx.raw} hrs  (€${(ctx.raw*20).toLocaleString()})`
+          }}
+        },
+        cutout:'58%',
+        animation:{ duration:1200, easing:'easeOutQuart' }
+      }
+    });
+
+    // Dynamic headline stats update
+    document.querySelectorAll('.stat h3')[2].innerText = '€20/hr';
+
+    // Optional: Fake download
+    document.querySelector("a[href='#download']").addEventListener('click', (e)=>{
+      e.preventDefault();
+      const blob = new Blob([`Proposal Summary\nTotal Hours: ${totalHours}\nEstimated Cost: €${(euros).toLocaleString()}`], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'Machine-Afrik_Proposal_Summary.txt'; a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
